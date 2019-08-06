@@ -1,6 +1,6 @@
 <template>
   <div class="sign-up container">
-    <form action class="card-panel" @submit.prevent="signUp">
+    <form class="card-panel" @submit.prevent="signUp">
       <h2 class="center deep-purple-text">Sign Up</h2>
       <div class="input-field">
         <input type="email" name="email" id="email" v-model="email">
@@ -16,8 +16,11 @@
       </div>
       <p class="red-text center" v-if="feedback">{{ feedback }}</p>
       <div class="input-field center">
-        <button class="btn deep-purple">Sign Up</button>
+        <button class="btn">Sign Up</button>
       </div>
+      <p class="center">
+        <router-link :to="{ name: 'LogIn' }" class="cyan-text">already have an account?</router-link>
+      </p>
     </form>
   </div>
 </template>
@@ -91,8 +94,12 @@ export default {
 
 <style>
 .sign-up {
-  max-width: 30%;
   padding-top: 60px;
+}
+
+.sign-up form {
+  max-width: 50%;
+  margin: auto;
 }
 
 .input-field {

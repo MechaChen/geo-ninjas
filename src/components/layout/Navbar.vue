@@ -8,7 +8,7 @@
             <router-link :to="{ name: 'SignUp' }">Sign Up</router-link>
           </li>
           <li>
-            <a href="javascript:;">Log in</a>
+            <router-link :to="{ name: 'LogIn' }">Log in</router-link>
           </li>
           <li>
             <a @click="logOut">Log out</a>
@@ -34,8 +34,8 @@ export default {
         .auth()
         .signOut()
         // 導回到 Sign Up component 頁面
-        .then(() => this.$router.push({ name: "SignUp" }))
         .then(() => alert("已登出"))
+        .then(() => this.$router.push({ name: "LogIn" }))
         .catch(err => console.log(err));
     }
   }
