@@ -65,7 +65,7 @@ export default {
           // 暫存位置最大停留時間
           maximumAge: 60000,
           // 等待幾秒無回應後才發錯誤通知
-          timeout: 3000
+          timeout: 5000
         }
       );
     } else {
