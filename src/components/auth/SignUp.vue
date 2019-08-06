@@ -25,6 +25,7 @@
 <script>
 import slugify from "slugify";
 import db from "@/firebase/init";
+import firebase from "firebase";
 
 export default {
   name: "SignUp",
@@ -39,27 +40,38 @@ export default {
   },
   methods: {
     signUp() {
-      let { alias, slug, feedback } = this;
-      if (alias) {
+      let { email, password, alias, slug, feedback } = this;
+      if (email && password && alias) {
         //   將暱稱轉換為固定形式， ex : benson-chen, the-net-ninja
         slug = slugify(alias, {
           replacement: "-",
           remove: /[*+~.()'"!:@]/g,
           lower: true
         });
-        // 取得 users 的 Collection(Table)
+        // 取得 users 的 Collection <Table>
         let ref = db.collection("users").doc(slug);
-        // 檢查是否有一筆資料 (doc) 對應到相同暱稱
+        // 檢查是否有一筆資料 (doc <row> ) 對應到相同暱稱
         ref.get().then(doc => {
           if (doc.exists) {
+            // 若存在則回報此暱稱已存在
             this.feedback = "This alias already exists";
           } else {
-            this.feedback = "This alias is free to use";
+            // 若都沒有則用 email 和 password 創建新帳號
+            // 帳號會儲存於 Authentication
+            firebase
+              .auth()
+              .createUserWithEmailAndPassword(email, password)
+              // 告訴使用者創建成功
+              .then(() => alert("創建成功"))
+              .catch(err => {
+                console.log(err);
+                this.feedback = err.message;
+              });
           }
         });
         console.log(slug);
       } else {
-        feedback = "You must enter an alias";
+        this.feedback = "You must enter all fields";
       }
     }
   }
