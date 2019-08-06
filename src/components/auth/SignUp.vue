@@ -61,8 +61,19 @@ export default {
             firebase
               .auth()
               .createUserWithEmailAndPassword(email, password)
+              .then(cred =>
+                ref.set({
+                  alias,
+                  geolocation: null,
+                  user_id: cred.user.uid
+                })
+              )
               // 告訴使用者創建成功
-              .then(() => alert("創建成功"))
+              .then(() => {
+                alert("創建成功");
+                // 將使用者導到 GMap component 的頁面
+                this.$router.push({ name: "GMap" });
+              })
               .catch(err => {
                 console.log(err);
                 this.feedback = err.message;
